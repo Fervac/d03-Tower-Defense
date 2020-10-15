@@ -9,6 +9,7 @@ public class Manager : MonoBehaviour
     public GameObject EnemyPrefab;
 
     public GameObject GameOverScreen;
+    public GameObject PauseScreen;
 
     public GameObject Arcane;
     public GameObject Arrow;
@@ -19,6 +20,10 @@ public class Manager : MonoBehaviour
 
     public Text lifeText;
     public int life = 10;
+
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
 
     #region SINGLETON PATTERN
     public static Manager _instance;
@@ -45,6 +50,8 @@ public class Manager : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1f;
+
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
 
         GameOverScreen = GameObject.FindWithTag("GameOver");
         GameOverScreen.SetActive(false);
@@ -157,18 +164,15 @@ public class Manager : MonoBehaviour
 
     public void GameOver()
     {
+        RankingSystem.Instance.FinalScore();
+
         GameOverScreen.SetActive(true);
         Time.timeScale = 0f;
     }
 
-    public void Retry()
+    public void PauseMenu()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
+        PauseScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 }

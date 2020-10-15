@@ -51,6 +51,7 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Manager.Instance.gold += 50;
+            RankingSystem.Instance.score += 50;
 
             Destroy(this.gameObject);
         }
