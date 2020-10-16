@@ -21,6 +21,8 @@ public class Manager : MonoBehaviour
     public Text lifeText;
     public int life = 10;
 
+    public int wave = 0;
+
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
@@ -64,6 +66,15 @@ public class Manager : MonoBehaviour
     {
         goldText.text = gold.ToString();
         lifeText.text = life.ToString();
+
+        if (wave > 40)
+        {
+            Enemy[] allEnemies = GameObject.FindObjectsOfType<Enemy>();
+            if (allEnemies.Length == 0)
+            {
+                GameOver(true);
+            }
+        }
     }
 
     public string GetPrice(Tower.Type type)
@@ -149,7 +160,11 @@ public class Manager : MonoBehaviour
 
     private void Spawn()
     {
-        Instantiate(EnemyPrefab, new Vector3(1240, 315, -0.1f), Quaternion.identity);
+        wave += 1;
+        if (wave <= 40)
+        {
+            Instantiate(EnemyPrefab, new Vector3(1240, 315, -0.1f), Quaternion.identity);
+        }
     }
 
     public void Hit()
@@ -158,13 +173,13 @@ public class Manager : MonoBehaviour
 
         if (life <= 0)
         {
-            GameOver();
+            GameOver(false);
         }
     }
 
-    public void GameOver()
+    public void GameOver(bool win)
     {
-        RankingSystem.Instance.FinalScore();
+        RankingSystem.Instance.FinalScore(win);
 
         GameOverScreen.SetActive(true);
         Time.timeScale = 0f;

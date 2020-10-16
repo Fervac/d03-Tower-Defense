@@ -12,6 +12,8 @@ public class RankingSystem : MonoBehaviour
 
     public List<Sprite> ranks;
 
+    public bool victory = false;
+
     #region SINGLETON PATTERN
     public static RankingSystem _instance;
     public static RankingSystem Instance
@@ -34,11 +36,16 @@ public class RankingSystem : MonoBehaviour
     }
     #endregion
 
-    public void FinalScore()
+    public void FinalScore(bool win)
     {
         score += Manager.Instance.life * 100;
 
-        score += 10000;
+        if (win)
+        {
+            victory = true;
+
+            score += 500;
+        }
 
         spr = ranks[0];
 

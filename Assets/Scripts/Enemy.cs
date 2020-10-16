@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        Scene scene = SceneManager.GetActiveScene();
+
+        if (scene.name == "ex04")
+        {
+            health = 15;
+        }
+
         Paths = GameObject.FindWithTag("Paths");
 
         AddWaypoints();
